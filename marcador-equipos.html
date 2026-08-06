@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcador de Equipos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Img/2.png">
+
+<style>
+  :root{
+    --bg-950:#284884;
+    --bg-900:#111418;
+    --panel-800:#181c21;
+    --panel-700:#1f2530;
+    --line-700: rgba(255,255,255,0.08);
+    --text-100:#f2f4f6;
+    --text-300:#9aa4ac;
+    --text-500:#6b747c;
+
+    --rank1: #2dd4bf;
+    --rank1-glow: rgba(45,212,191,0.35);
+    --rank2: #c9d1d6;
+    --rank2-glow: rgba(201,209,214,0.18);
+    --rank3: #e0954a;
+    --rank3-glow: rgba(224,149,74,0.30);
+
+    --danger: #e15c4f;
+    color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; min-height:100%;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(45,212,191,0.06), transparent 45%),
+      radial-gradient(circle at 90% 10%, rgba(224,149,74,0.05), transparent 40%),
+      var(--bg-950);
+    color: var(--text-100);
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  main{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 20px 70px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .page-header{ margin-bottom: 36px; }
+  .live-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color: var(--rank1);
+    background: rgba(45,212,191,0.08);
+    border: 1px solid rgba(45,212,191,0.25);
+    padding: 5px 10px 5px 8px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .live-dot{
+    width:6px;height:6px;border-radius:50%;
+    background: var(--rank1);
+    box-shadow: 0 0 8px 2px var(--rank1-glow);
+    animation: pulse 1.6s infinite ease-in-out;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; transform:scale(1); }
+    50%{ opacity:0.4; transform:scale(0.7); }
+  }
+  .page-header h1{
+    margin:0 0 8px;
+    font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+    font-weight:700;
+  }
+  .page-header h1 b{ font-weight:800; }
+  .page-header p{
+    margin:0;
+    color: var(--text-300);
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- PODIUM ---------- */
+  .podium{
+    display:grid;
+    grid-template-columns: 1fr 1.08fr 1fr;
+    gap:16px;
+    align-items:end;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 760px){
+    .podium{ grid-template-columns: 1fr; }
+    .podium .podium-card:nth-child(2){ order:-1; }
+  }
+
+  .podium-card{
+    position:relative;
+    background: linear-gradient(160deg, var(--panel-800), var(--bg-900));
+    border: 1px solid var(--line-700);
+    border-radius: 16px;
+    padding: 22px 18px 20px;
+    text-align:center;
+    transition: transform 0.2s ease;
+  }
+  .podium-card.rank-1{
+    border-color: rgba(45,212,191,0.55);
+    box-shadow: 0 0 0 1px rgba(45,212,191,0.15), 0 0 34px var(--rank1-glow);
+    padding-top:28px;
+    transform: translateY(-10px);
+  }
+  .podium-card.rank-2{ border-color: rgba(201,209,214,0.35); }
+  .podium-card.rank-3{ border-color: rgba(224,149,74,0.4); box-shadow: 0 0 22px var(--rank3-glow); }
+
+  .rank-badge{
+    display:inline-block;
+    font-size:0.75rem;
+    font-weight:700;
+    padding: 3px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .rank-1 .rank-badge{ background: rgba(45,212,191,0.15); color: var(--rank1); border:1px solid rgba(45,212,191,0.4); }
+  .rank-2 .rank-badge{ background: rgba(201,209,214,0.12); color: var(--rank2); border:1px solid rgba(201,209,214,0.3); }
+  .rank-3 .rank-badge{ background: rgba(224,149,74,0.15); color: var(--rank3); border:1px solid rgba(224,149,74,0.4); }
+
+  .team-avatar{
+    width:64px; height:64px;
+    border-radius:50%;
+    margin:0 auto 12px;
+    object-fit:cover;
+    background: var(--panel-700);
+    border:2px solid var(--line-700);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:1.1rem; color: var(--text-300);
+  }
+  .rank-1 .team-avatar{ width:76px; height:76px; border-color: rgba(45,212,191,0.5); }
+
+  .team-name{
+    font-weight:600;
+    font-size:0.98rem;
+    margin-bottom:10px;
+  }
+  .team-score{
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    font-weight:800;
+    line-height:1;
+    margin-bottom:2px;
+  }
+  .rank-1 .team-score{ color: var(--rank1); }
+  .rank-2 .team-score{ color: var(--rank2); }
+  .rank-3 .team-score{ color: var(--rank3); }
+  .team-score-label{
+    font-size:0.65rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color: var(--text-500);
+    margin-bottom:16px;
+  }
+
+  .score-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .score-btn{
+    width:28px; height:28px;
+    border-radius:8px;
+    border:1px solid var(--line-700);
+    background: var(--panel-700);
+    color: var(--text-100);
+    font-size:1rem;
+    line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .score-btn:hover{ background: #262d38; }
+  .score-btn.remove{
+    border-color: rgba(225,92,79,0.35);
+    color: var(--danger);
+    background: rgba(225,92,79,0.08);
+  }
+  .score-btn.remove:hover{ background: rgba(225,92,79,0.18); }
+
+  /* ---------- LIST (rank 4+) ---------- */
+  .rank-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom: 40px;
+  }
+  .rank-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background: linear-gradient(160deg, var(--panel-800), var(--bg-900));
+    border: 1px solid var(--line-700);
+    border-radius:12px;
+    padding: 12px 16px;
+  }
+  .rank-row .rank-num{
+    width:26px;
+    text-align:center;
+    font-weight:700;
+    color: var(--text-500);
+    font-size:0.9rem;
+  }
+  .rank-row .team-avatar{ width:38px; height:38px; margin:0; font-size:0.8rem; }
+  .rank-row .row-name{ flex:1; font-weight:600; font-size:0.92rem; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .rank-row .row-score{ font-weight:800; font-size:1.05rem; min-width:44px; text-align:right; }
+  .rank-row .score-controls{ margin-left:6px; }
+
+  .empty-state{
+    text-align:center;
+    color: var(--text-500);
+    font-size:0.85rem;
+    padding: 30px 0;
+    border: 1px dashed var(--line-700);
+    border-radius:14px;
+  }
+
+  /* ---------- ADD TEAM PANEL ---------- */
+  .panel{
+    background: var(--panel-800);
+    border:1px solid var(--line-700);
+    border-radius:16px;
+    padding:22px;
+    max-width: 520px;
+  }
+  .panel h2{
+    margin:0 0 4px;
+    font-size:1rem;
+    font-weight:700;
+  }
+  .panel .hint{
+    margin:0 0 18px;
+    font-size:0.8rem;
+    color: var(--text-300);
+  }
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color: var(--text-500);
+    margin-bottom:6px;
+  }
+  .field-row{ display:flex; gap:12px; }
+  .field-row .field{ flex:1; }
+  input[type="text"], input[type="number"]{
+    width:100%;
+    padding:10px 12px;
+    background: var(--bg-900);
+    border:1px solid var(--line-700);
+    border-radius:8px;
+    color: var(--text-100);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.92rem;
+  }
+  input[type="text"]:focus, input[type="number"]:focus{
+    outline:2px solid var(--rank1);
+    outline-offset:1px;
+  }
+
+  .image-picker{ display:flex; align-items:center; gap:12px; }
+  .image-preview{
+    width:42px; height:42px;
+    border-radius:50%;
+    background: var(--bg-900);
+    border:2px dashed var(--line-700);
+    background-size:cover;
+    background-position:center;
+    flex-shrink:0;
+  }
+  .file-btn{
+    position:relative;
+    overflow:hidden;
+    background: var(--bg-900);
+    border:1px solid var(--line-700);
+    color: var(--text-100);
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:0.82rem;
+    cursor:pointer;
+  }
+  .file-btn input[type="file"]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+
+  .add-btn{
+    width:100%;
+    margin-top:6px;
+    padding:12px;
+    border:none;
+    border-radius:9px;
+    background: var(--rank1);
+    color: #05231f;
+    font-weight:700;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .add-btn:hover{ filter:brightness(1.08); }
+  .add-btn:active{ transform: scale(0.99); }
+
+  footer{
+    text-align:center;
+    padding: 10px 16px 30px;
+    font-size:0.75rem;
+    color: var(--text-500);
+  }
+  .marquee-logo{
+    
+  max-width: min(90%, 320px);
+  height: auto;
+  display: inline-block;
+  filter: drop-shadow(0 0 14px rgba(232,183,61,0.35)) drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+}
+  .nav-switch{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:40;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    border-radius:999px;
+    background: var(--panel-800);
+    border:1px solid rgba(45,212,191,0.4);
+    color: var(--rank1);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    font-weight:600;
+    text-decoration:none;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .nav-switch:hover{ background: var(--panel-700); transform: translateY(-1px); }
+</style>
+</head>
+<body>
+<a class="nav-switch" href="index.html">🎡 Ir a la Ruleta</a>
+<main>
+
+  <div class="page-header">
+    <div class="live-tag"><span class="live-dot"></span>En vivo</div>
+      <h1><b>Marcador</b> de Equipos</h1>
+    <p>Sumá puntos a cada equipo y mirá el ranking actualizarse al instante</p>
+  </div>
+
+  <div id="podium" class="podium"></div>
+
+  <div id="restList" class="rank-list"></div>
+
+  <footer>Los equipos se cargan desde el código (función seedDefaults). Los datos se guardan solo en esta sesión del navegador.</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  let teams = [];
+  let nextId = 1;
+
+  const podiumEl = document.getElementById('podium');
+  const restListEl = document.getElementById('restList');
+
+  function seedDefaults(){
+    teams.push({ id:nextId++, name:"EQUIPO ROJO - ", score:0, img:"img/Equipo.Rojo.jpg" });
+    teams.push({ id:nextId++, name:"EQUIPO AZUL - ", score:0, img:"img/Equipo.Azul.jpg"});
+    teams.push({ id:nextId++, name:"EQUIPO VERDE - ", score:0, img:"img/Equipo.Verde.jpg" });
+    teams.push({ id:nextId++, name:"EQUIPO AMARILLO - ", score:0, img:"img/Equipo.Amarillo.jpg" });
+    teams.push({ id:nextId++, name:"EQUIPO ROSA - ", score:0, img:"img/Equipo.Rosa.jpg" });
+    teams.push({ id:nextId++, name:"EQUIPO NARANJA - ", score:0, img:"img/Equipo.Naranja.jpg" });
+    render();
+  }
+
+  function initials(name){
+    return name.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  }
+
+  function avatarHtml(team, size){
+    if(team.img){
+      return `<img class="team-avatar" src="${team.img}" alt="${escapeHtml(team.name)}" style="width:${size}px;height:${size}px;">`;
+    }
+    return `<div class="team-avatar" style="width:${size}px;height:${size}px;">${initials(team.name)}</div>`;
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function render(){
+    const sorted = [...teams].sort((a,b)=> b.score - a.score);
+    renderPodium(sorted.slice(0,3));
+    renderRest(sorted.slice(3));
+  }
+
+  function renderPodium(top3){
+    if(top3.length === 0){
+      podiumEl.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">Agregá equipos para armar el podio.</div>`;
+      return;
+    }
+    // visual order: 2nd, 1st, 3rd
+    const order = [top3[1], top3[0], top3[2]];
+    podiumEl.innerHTML = order.map((team)=>{
+      if(!team) return `<div></div>`;
+      const rank = top3.indexOf(team) + 1;
+      const avatarSize = rank === 1 ? 76 : 64;
+      return `
+        <div class="podium-card rank-${rank}">
+          <div class="rank-badge">${rank}°</div>
+          ${avatarHtml(team, avatarSize)}
+          <div class="team-name">${escapeHtml(team.name)}</div>
+          <div class="team-score">${team.score}</div>
+          <div class="team-score-label">Puntos</div>
+          <div class="score-controls">
+            <button class="score-btn" data-action="dec" data-id="${team.id}">−</button>
+            <button class="score-btn" data-action="inc" data-id="${team.id}">+</button>
+            <button class="score-btn remove" data-action="del" data-id="${team.id}" title="Quitar">×</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderRest(rest){
+    if(rest.length === 0){
+      restListEl.innerHTML = "";
+      return;
+    }
+    restListEl.innerHTML = rest.map((team, i)=>{
+      const rank = i + 4;
+      return `
+        <div class="rank-row">
+          <div class="rank-num">${rank}°</div>
+          ${avatarHtml(team, 38)}
+          <div class="row-name">${escapeHtml(team.name)}</div>
+          <div class="row-score">${team.score}</div>
+          <div class="score-controls">
+            <button class="score-btn" data-action="dec" data-id="${team.id}">−</button>
+            <button class="score-btn" data-action="inc" data-id="${team.id}">+</button>
+            <button class="score-btn remove" data-action="del" data-id="${team.id}" title="Quitar">×</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.score-btn');
+    if(!btn) return;
+    const id = Number(btn.dataset.id);
+    const action = btn.dataset.action;
+    const team = teams.find(t=>t.id === id);
+    if(!team) return;
+    if(action === 'inc') team.score += 1;
+    if(action === 'dec') team.score -= 1;
+    if(action === 'del') teams = teams.filter(t=>t.id !== id);
+    render();
+  });
+
+  seedDefaults();
+})();
+</script>
+</body>
+</html>

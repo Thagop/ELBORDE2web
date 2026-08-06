@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EL BORDE 2 - EVENTOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Img/2.png">
+<style>
+ :root{
+    --maroon-950:#0e1930;
+    --maroon-900:#152a5a;
+    --maroon-800:#1c3566;
+    --maroon-700:#284884;
+    --mustard-500:#e8b73d;
+    --mustard-300:#f3d27a;
+    --cream-100:#eef3fb;
+    --cream-200:#d7e2f5;
+    --teal-500:#3fa9dc;
+    --teal-300:#7cc6ea;
+    --coral-500:#d9483b;
+    --coral-300:#e8776a;
+    --wheel-size: clamp(260px, 36vw, 460px);
+    --ring-gap: 22px;
+    color-scheme: dark;
+  }
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    min-height:100%;
+    background:
+      radial-gradient(circle at 20% -10%, rgba(232,166,61,0.10), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(47,111,106,0.14), transparent 40%),
+      var(--maroon-950);
+    color:var(--cream-100);
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .display{ font-family:'Bungee', 'Space Grotesk', sans-serif; letter-spacing:0.5px; }
+
+  /* ---------- MARQUEE HEADER ---------- */
+  .marquee{
+    position:relative;
+    padding: 26px 16px 22px;
+    text-align:center;
+    background: linear-gradient(180deg, var(--maroon-900), var(--maroon-950));
+    border-bottom: 3px solid var(--mustard-500);
+    overflow:hidden;
+  }
+  .marquee h1{
+    margin:0;
+    font-size: clamp(1.6rem, 4.4vw, 2.7rem);
+    color: var(--mustard-300);
+    text-shadow: 0 0 14px rgba(232,166,61,0.35), 0 2px 0 rgba(0,0,0,0.4);
+  }
+  .marquee p{
+    margin:8px 0 0;
+    color: var(--cream-200);
+    font-size:0.95rem;
+    opacity:0.85;
+  }
+  .marquee-bulbs{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+  }
+  .marquee-bulbs span{
+    width:8px;height:8px;border-radius:50%;
+    background: var(--mustard-500);
+    box-shadow:0 0 6px 1px rgba(232,166,61,0.7);
+    animation: twinkle 1.6s infinite ease-in-out;
+  }
+  .marquee-bulbs span:nth-child(odd){ background: var(--coral-500); box-shadow:0 0 6px 1px rgba(217,87,59,0.7); animation-delay:0.3s;}
+  .marquee-bulbs span:nth-child(3n){ background: var(--teal-300); box-shadow:0 0 6px 1px rgba(93,163,157,0.6); animation-delay:0.6s;}
+  @keyframes twinkle{
+    0%,100%{ opacity:0.35; transform:scale(0.85); }
+    50%{ opacity:1; transform:scale(1.05); }
+  }
+.marquee-logo{
+  max-width: min(90%, 320px);
+  height: auto;
+  display: inline-block;
+  filter: drop-shadow(0 0 14px rgba(232,183,61,0.35)) drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+}
+  /* ---------- LAYOUT ---------- */
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding: 34px 20px 60px;
+    display:grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: 40px;
+    align-items:start;
+  }
+  @media (max-width: 880px){
+    main{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- WHEEL SECTION ---------- */
+  .wheel-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+  }
+
+  .wheel-stage{
+    position:relative;
+    width: calc(var(--wheel-size) + var(--ring-gap) * 2 + 30px);
+    height: calc(var(--wheel-size) + var(--ring-gap) * 2 + 30px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .bulb-ring{ position:absolute; inset:0; }
+  .bulb{
+    position:absolute;
+    top:50%; left:50%;
+    width:11px; height:11px;
+    margin-top:-5.5px; margin-left:-5.5px;
+    border-radius:50%;
+    background: var(--mustard-300);
+    box-shadow: 0 0 8px 2px rgba(243,200,119,0.65);
+    animation: twinkle 2.2s infinite ease-in-out;
+  }
+  .bulb:nth-child(3n){ background: var(--coral-300); box-shadow:0 0 8px 2px rgba(232,138,113,0.55); }
+  .bulb:nth-child(4n){ background: var(--teal-300); box-shadow:0 0 8px 2px rgba(93,163,157,0.55); }
+  .wheel-stage.spinning .bulb{ animation-duration: 0.35s; }
+
+  .pointer{
+    position:absolute;
+    top: -2px;
+    left:50%;
+    transform: translateX(-50%);
+    width:0; height:0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 26px solid var(--mustard-500);
+    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.45));
+    z-index:5;
+  }
+
+  .wheel-rim{
+    position:relative;
+    width: calc(var(--wheel-size) + 18px);
+    height: calc(var(--wheel-size) + 18px);
+    border-radius:50%;
+    background: linear-gradient(135deg, var(--mustard-500), #a9691f);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45), inset 0 0 0 3px rgba(0,0,0,0.15);
+  }
+
+  canvas#wheel{
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    border-radius:50%;
+    display:block;
+    transition: transform 4.2s cubic-bezier(0.14,0.67,0.2,1);
+    box-shadow: inset 0 0 0 4px rgba(35,13,18,0.5);
+    background: var(--maroon-800);
+  }
+
+  .hub{
+    position:absolute;
+    top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    width: clamp(64px, 12vw, 92px);
+    height: clamp(64px, 12vw, 92px);
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--coral-300), var(--coral-500) 60%, #a13c26 100%);
+    border: 3px solid var(--cream-100);
+    color: var(--cream-100);
+    font-family:'Bungee', sans-serif;
+    font-size: clamp(0.7rem, 1.6vw, 0.95rem);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.1;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.25);
+    z-index:6;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .hub:hover:not(:disabled){ transform: translate(-50%,-50%) scale(1.05); }
+  .hub:active:not(:disabled){ transform: translate(-50%,-50%) scale(0.97); }
+  .hub:disabled{ cursor:not-allowed; opacity:0.55; }
+
+  .wheel-empty-msg{
+    max-width: 70%;
+    text-align:center;
+    color: var(--cream-200);
+    font-size:0.85rem;
+    opacity:0.8;
+  }
+
+  /* ---------- FORM PANEL ---------- */
+  .panel{
+    background: var(--maroon-900);
+    border: 1px solid rgba(232,166,61,0.25);
+    border-radius: 16px;
+    padding: 22px;
+  }
+  .panel h2{
+    margin:0 0 4px;
+    font-family:'Bungee', sans-serif;
+    font-size:1.05rem;
+    color: var(--mustard-300);
+  }
+  .panel .hint{
+    margin:0 0 18px;
+    font-size:0.82rem;
+    color: var(--cream-200);
+    opacity:0.75;
+  }
+
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color: var(--cream-200);
+    opacity:0.8;
+    margin-bottom:6px;
+  }
+  .field input[type="text"]{
+    width:100%;
+    padding:10px 12px;
+    background: var(--maroon-800);
+    border:1px solid rgba(247,236,217,0.18);
+    border-radius:8px;
+    color: var(--cream-100);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.95rem;
+  }
+  .field input[type="text"]:focus{
+    outline:2px solid var(--mustard-500);
+    outline-offset:1px;
+  }
+
+  .image-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .image-preview{
+    width:48px; height:48px;
+    border-radius:50%;
+    background: var(--maroon-800);
+    border:2px dashed rgba(247,236,217,0.3);
+    background-size:cover;
+    background-position:center;
+    flex-shrink:0;
+  }
+  .file-btn{
+    position:relative;
+    overflow:hidden;
+    background: var(--maroon-800);
+    border:1px solid rgba(247,236,217,0.25);
+    color: var(--cream-100);
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .file-btn input[type="file"]{
+    position:absolute; inset:0; opacity:0; cursor:pointer;
+  }
+
+  .add-btn{
+    width:100%;
+    margin-top:6px;
+    padding:12px;
+    border:none;
+    border-radius:9px;
+    background: var(--teal-500);
+    color: var(--cream-100);
+    font-family:'Bungee', sans-serif;
+    font-size:0.85rem;
+    letter-spacing:0.03em;
+    cursor:pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .add-btn:hover{ background: var(--teal-300); }
+  .add-btn:active{ transform: scale(0.98); }
+
+  .divider{
+    margin: 20px 0 16px;
+    border:none;
+    border-top:1px dashed rgba(247,236,217,0.25);
+  }
+
+  .ticket-list{
+    list-style:none;
+    margin:0; padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-height:420px;
+    overflow-y:auto;
+  }
+  .ticket{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background: var(--cream-100);
+    color: var(--maroon-950);
+    border-radius:8px;
+    padding:8px 12px 8px 8px;
+    background-image: radial-gradient(circle, var(--maroon-950) 3px, transparent 3.2px);
+    background-size: 100% 14px;
+    background-position: left center;
+    background-repeat: repeat-y;
+  }
+  .ticket::before{
+    content:"";
+    width:1px;
+    align-self:stretch;
+    border-left:2px dashed rgba(35,13,18,0.25);
+    margin-left:9px;
+  }
+  .ticket img{
+    width:36px; height:36px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--maroon-950);
+    flex-shrink:0;
+  }
+  .ticket .t-name{
+    flex:1;
+    font-weight:600;
+    font-size:0.92rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .ticket .t-remove{
+    border:none;
+    background:transparent;
+    color: var(--coral-500);
+    font-size:1.1rem;
+    line-height:1;
+    cursor:pointer;
+    padding:4px 6px;
+  }
+  .ticket .t-remove:hover{ color:#a13c26; }
+
+  .empty-list{
+    font-size:0.85rem;
+    color: var(--cream-200);
+    opacity:0.6;
+    text-align:center;
+    padding:14px 0;
+  }
+
+  /* ---------- WINNER MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background: rgba(15,6,8,0.72);
+    backdrop-filter: blur(3px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal{
+    background: linear-gradient(160deg, var(--maroon-900), var(--maroon-950));
+    border:2px solid var(--mustard-500);
+    border-radius:18px;
+    padding:32px 28px;
+    max-width:340px;
+    width:100%;
+    text-align:center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    animation: pop-in 0.35s cubic-bezier(0.2,0.8,0.3,1.2);
+  }
+  @keyframes pop-in{
+    0%{ transform:scale(0.7); opacity:0; }
+    100%{ transform:scale(1); opacity:1; }
+  }
+  .modal .eyebrow{
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color: var(--mustard-300);
+    opacity:0.85;
+    margin-bottom:10px;
+  }
+  .modal img{
+    width:120px; height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid var(--mustard-500);
+    box-shadow:0 0 0 6px rgba(232,166,61,0.15);
+    margin-bottom:16px;
+  }
+  .modal h3{
+    margin:0 0 20px;
+    font-family:'Bungee', sans-serif;
+    font-size:1.3rem;
+    color: var(--cream-100);
+  }
+  .modal button{
+    border:none;
+    background: var(--coral-500);
+    color: var(--cream-100);
+    padding:10px 22px;
+    border-radius:8px;
+    font-family:'Bungee', sans-serif;
+    font-size:0.8rem;
+    cursor:pointer;
+  }
+  .nav-switch{
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:40;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:9px 16px;
+  border-radius:999px;
+  background: var(--maroon-900);
+  border:1px solid rgba(232,183,61,0.4);
+  color: var(--mustard-300);
+  font-family:'Space Grotesk', sans-serif;
+  font-size:0.8rem;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.nav-switch:hover{ background: var(--maroon-800); transform: translateY(-1px); }
+  .modal button:hover{ background: var(--coral-300); }
+
+  .nav-switch-left{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:40;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:9px 16px;
+  border-radius:999px;
+  background: var(--maroon-900);
+  border:1px solid rgba(63,169,220,0.4);
+  color: var(--teal-300);
+  font-family:'Space Grotesk', sans-serif;
+  font-size:0.8rem;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.nav-switch-left:hover{ background: var(--maroon-800); transform: translateY(-1px); }
+  @media (prefers-reduced-motion: reduce){
+    canvas#wheel{ transition-duration: 0.6s; }
+    .bulb, .marquee-bulbs span{ animation: none; }
+  }
+
+  footer{
+    text-align:center;
+    padding: 18px 16px 32px;
+    font-size:0.78rem;
+    color: var(--cream-200);
+    opacity:0.55;
+  }
+</style>
+</head>
+<body>
+ <a class="nav-switch" href="marcador-equipos.html">🏆 Ir al Marcador</a>
+<a class="nav-switch-left" href="logros.html">🏆 Ir a los logros</a>
+<div class="marquee">
+  <img class="marquee-logo" src="Img/ELBORDE2_LOGO.png" alt="El Borde 2 - Eventos">
+  <p>Con que vamos a sufrir hoy? veamoslo</p>
+  <div class="marquee-bulbs">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<main>
+  <section class="wheel-section">
+    <div class="wheel-stage" id="wheelStage">
+      <div class="bulb-ring" id="bulbRing"></div>
+      <div class="pointer"></div>
+      <div class="wheel-rim">
+        <canvas id="wheel" width="600" height="600"></canvas>
+        <button class="hub" id="spinBtn" disabled>GIRAR</button>
+      </div>
+    </div>
+    <p class="wheel-empty-msg" id="emptyMsg">Agregá al menos 2 eventos con su imagen para poder girar la ruleta.</p>
+  </section>
+
+  <section class="panel">
+    <h2 class="display">Agregar evento</h2>
+    <p class="hint">Ponele nombre y una imagen para identificarlo en la ruleta.</p>
+
+    <div class="field">
+      <label for="eventName">Nombre del evento</label>
+      <input type="text" id="eventName" placeholder="Ej: Añadi el evento" maxlength="40">
+    </div>
+
+    <div class="field">
+      <label>Imagen</label>
+      <div class="image-picker">
+        <div class="image-preview" id="imagePreview"></div>
+        <label class="file-btn">
+          Elegir imagen
+          <input type="file" id="eventImage" accept="image/*">
+        </label>
+      </div>
+    </div>
+
+    <button class="add-btn" id="addBtn">+ AGREGAR A LA RULETA</button>
+
+    <hr class="divider">
+
+    <ul class="ticket-list" id="ticketList">
+      <li class="empty-list">Todavía no hay eventos cargados.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>puto el que lee</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="eyebrow">El evento elegido es...</div>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalName" class="display"></h3>
+    <button id="modalClose">CERRAR</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- State ----------
+  /** @type {{id:number, name:string, img:HTMLImageElement}[]} */
+  let events = [];
+  let nextId = 1;
+  let currentRotation = 0;
+  let spinning = false;
+  let pendingImageDataUrl = null;
+
+  const SLICE_COLORS = ["#e8a63d", "#d9573b", "#2f6f6a", "#f3c877", "#c94f7a", "#3d8f88"];
+
+  // ---------- DOM refs ----------
+  const canvas = document.getElementById('wheel');
+  const ctx = canvas.getContext('2d');
+  const wheelStage = document.getElementById('wheelStage');
+  const bulbRing = document.getElementById('bulbRing');
+  const spinBtn = document.getElementById('spinBtn');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const nameInput = document.getElementById('eventName');
+  const fileInput = document.getElementById('eventImage');
+  const imagePreview = document.getElementById('imagePreview');
+  const addBtn = document.getElementById('addBtn');
+  const ticketList = document.getElementById('ticketList');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalImg = document.getElementById('modalImg');
+  const modalName = document.getElementById('modalName');
+  const modalClose = document.getElementById('modalClose');
+
+  // ---------- Placeholder default events ----------
+  function svgPlaceholder(emoji, bg){
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+      <rect width="120" height="120" fill="${bg}"/>
+      <text x="60" y="72" font-size="56" text-anchor="middle">${emoji}</text>
+    </svg>`;
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  }
+
+function seedDefaults(){
+  addEvent("MORIR CUESTA", "img/-1 PUNTO.png");
+  addEvent("DOBLE ASESINATO", "img/+2 PUNTOS.png");
+  addEvent("PRIMERA SANGRE", "img/CALAVERA-MINE.png");
+  addEvent("NUDISTA", "img/NUDISTA.png");
+  addEvent("NO MORIRAS", "img/CORAZON.png");
+  addEvent("NOCHE ETERNA", "img/NOCTURNO.png");
+  addEvent("CAOS", "img/CAOS.png");
+  addEvent("LA VARA DE LA VERDAD", "img/LAVARADELAVERDAD.png");
+  addEvent("VAR", "img/VAR.png");
+}
+
+  // ---------- Bulb ring ----------
+  function buildBulbs(count){
+    bulbRing.innerHTML = "";
+    for(let i=0;i<count;i++){
+      const deg = (360/count) * i;
+      const b = document.createElement('div');
+      b.className = 'bulb';
+      b.style.transform = `rotate(${deg}deg) translate(0, calc(-1 * (var(--wheel-size) / 2 + 24px)))`;
+      b.style.animationDelay = (i * 0.08) + "s";
+      bulbRing.appendChild(b);
+    }
+  }
+
+  // ---------- Canvas sizing ----------
+  function sizeCanvas(){
+    const cssSize = canvas.getBoundingClientRect().width || 600;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = cssSize * dpr;
+    canvas.height = cssSize * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    drawWheel();
+  }
+
+  // ---------- Drawing ----------
+  function drawWheel(){
+    const cssSize = canvas.getBoundingClientRect().width || parseFloat(getComputedStyle(canvas).width);
+    const size = cssSize || 600;
+    const cx = size/2, cy = size/2, r = size/2;
+    ctx.clearRect(0,0,size,size);
+
+    if(events.length === 0){
+      ctx.fillStyle = "#4a1a24";
+      ctx.beginPath();
+      ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(247,236,217,0.55)";
+      ctx.font = "600 15px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      wrapText("Agregá eventos\npara empezar", cx, cy, 16);
+      return;
+    }
+
+    const n = events.length;
+    const segRad = (Math.PI*2)/n;
+    const start0 = -Math.PI/2;
+
+    events.forEach((ev, i)=>{
+      const a0 = start0 + i*segRad;
+      const a1 = start0 + (i+1)*segRad;
+      const mid = (a0+a1)/2;
+
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r,a0,a1);
+      ctx.closePath();
+      ctx.fillStyle = SLICE_COLORS[i % SLICE_COLORS.length];
+      ctx.fill();
+      ctx.strokeStyle = "rgba(35,13,18,0.5)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // image
+      const imgR = Math.max(16, r*0.16);
+      const imgDist = r*0.62;
+      const ix = cx + Math.cos(mid)*imgDist;
+      const iy = cy + Math.sin(mid)*imgDist;
+      if(ev.img && ev.img.complete && ev.img.naturalWidth){
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(ix,iy,imgR,0,Math.PI*2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(ev.img, ix-imgR, iy-imgR, imgR*2, imgR*2);
+        ctx.restore();
+        ctx.beginPath();
+        ctx.arc(ix,iy,imgR,0,Math.PI*2);
+        ctx.strokeStyle = "rgba(247,236,217,0.9)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+    
+    });
+
+    // hub shadow ring
+    ctx.beginPath();
+    ctx.arc(cx,cy, r*0.005, 0, Math.PI*2);
+  }
+
+  function truncateLabel(ctx, text, maxWidth){
+    if(ctx.measureText(text).width <= maxWidth) return text;
+    let t = text;
+    while(t.length>1 && ctx.measureText(t+"…").width > maxWidth){
+      t = t.slice(0,-1);
+    }
+    return t + "…";
+  }
+
+  function wrapText(text, x, y, lineHeight){
+    const lines = text.split("\n");
+    const offset = ((lines.length-1)*lineHeight)/2;
+    lines.forEach((line,i)=>{
+      ctx.fillText(line, x, y - offset + i*lineHeight);
+    });
+  }
+
+  // ---------- Events (data) management ----------
+  function addEvent(name, dataUrl){
+    const img = new Image();
+    img.onload = drawWheel;
+    img.src = dataUrl;
+    const ev = { id: nextId++, name: name, img: img, src: dataUrl };
+    events.push(ev);
+    refreshAll();
+  }
+
+  function removeEvent(id){
+    events = events.filter(e => e.id !== id);
+    refreshAll();
+  }
+
+  function refreshAll(){
+    buildBulbs(Math.max(12, events.length*3));
+    drawWheel();
+    renderTicketList();
+    spinBtn.disabled = events.length < 2 || spinning;
+    emptyMsg.style.display = events.length < 2 ? "block" : "none";
+  }
+
+  function renderTicketList(){
+    ticketList.innerHTML = "";
+    if(events.length === 0){
+      const li = document.createElement('li');
+      li.className = "empty-list";
+      li.textContent = "Todavía no hay eventos cargados.";
+      ticketList.appendChild(li);
+      return;
+    }
+    events.forEach(ev=>{
+      const li = document.createElement('li');
+      li.className = "ticket";
+      li.innerHTML = `
+        <img src="${ev.src}" alt="">
+        <span class="t-name">${escapeHtml(ev.name)}</span>
+        <button class="t-remove" title="Quitar" aria-label="Quitar ${escapeHtml(ev.name)}">×</button>
+      `;
+      li.querySelector('.t-remove').addEventListener('click', ()=> removeEvent(ev.id));
+      ticketList.appendChild(li);
+    });
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ---------- Form interactions ----------
+  fileInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      pendingImageDataUrl = ev.target.result;
+      imagePreview.style.backgroundImage = `url(${pendingImageDataUrl})`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  addBtn.addEventListener('click', ()=>{
+    const name = nameInput.value.trim();
+    if(!name){
+      nameInput.focus();
+      nameInput.style.outline = "2px solid var(--coral-500)";
+      setTimeout(()=> nameInput.style.outline = "", 900);
+      return;
+    }
+    const img = pendingImageDataUrl || svgPlaceholder("🎟️", "#63232f");
+    addEvent(name, img);
+    nameInput.value = "";
+    fileInput.value = "";
+    pendingImageDataUrl = null;
+    imagePreview.style.backgroundImage = "";
+  });
+
+  nameInput.addEventListener('keydown', (e)=>{
+    if(e.key === "Enter") addBtn.click();
+  });
+
+  // ---------- Spin logic ----------
+  spinBtn.addEventListener('click', spin);
+
+  function spin(){
+    if(spinning || events.length < 2) return;
+    spinning = true;
+    spinBtn.disabled = true;
+    wheelStage.classList.add('spinning');
+
+    const n = events.length;
+    const segDeg = 360/n;
+    const winnerIndex = Math.floor(Math.random()*n);
+    const winnerCenter = winnerIndex*segDeg + segDeg/2;
+
+    const currentMod = ((currentRotation % 360) + 360) % 360;
+    let neededMod = (360 - winnerCenter) % 360;
+    let delta = neededMod - currentMod;
+    if(delta <= 0) delta += 360;
+
+    const extraSpins = 5;
+    const newRotation = currentRotation + delta + 360*extraSpins;
+    currentRotation = newRotation;
+
+    canvas.style.transform = `rotate(${newRotation}deg)`;
+
+    const onEnd = ()=>{
+      canvas.removeEventListener('transitionend', onEnd);
+      spinning = false;
+      wheelStage.classList.remove('spinning');
+      spinBtn.disabled = events.length < 2;
+      showWinner(events[winnerIndex]);
+    };
+    canvas.addEventListener('transitionend', onEnd);
+  }
+
+  function showWinner(ev){
+    modalImg.src = ev.src;
+    modalImg.alt = ev.name;
+    modalName.textContent = ev.name;
+    modalOverlay.classList.add('show');
+  }
+
+  modalClose.addEventListener('click', ()=> modalOverlay.classList.remove('show'));
+  modalOverlay.addEventListener('click', (e)=>{
+    if(e.target === modalOverlay) modalOverlay.classList.remove('show');
+  });
+
+  // ---------- Init ----------
+  window.addEventListener('resize', debounce(sizeCanvas, 150));
+
+  function debounce(fn, ms){
+    let t;
+    return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+  }
+
+  seedDefaults();
+  requestAnimationFrame(sizeCanvas);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EL BORDE 2 - LOGROS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Img/2.png">
+<style>
+  :root{
+    --maroon-950:#0e1930;
+    --maroon-900:#152a5a;
+    --maroon-800:#1c3566;
+    --maroon-700:#284884;
+    --mustard-500:#e8b73d;
+    --mustard-300:#f3d27a;
+    --cream-100:#eef3fb;
+    --cream-200:#d7e2f5;
+    --teal-500:#3fa9dc;
+    --teal-300:#7cc6ea;
+    --coral-500:#d9483b;
+    --coral-300:#e8776a;
+    color-scheme: dark;
+  }
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    min-height:100%;
+    background:
+      radial-gradient(circle at 20% -10%, rgba(232,166,61,0.10), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(47,111,106,0.14), transparent 40%),
+      var(--maroon-950);
+    color:var(--cream-100);
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .display{ font-family:'Bungee', 'Space Grotesk', sans-serif; letter-spacing:0.5px; }
+
+  /* ---------- MARQUEE HEADER ---------- */
+  .marquee{
+    position:relative;
+    padding: 26px 16px 22px;
+    text-align:center;
+    background: linear-gradient(180deg, var(--maroon-900), var(--maroon-950));
+    border-bottom: 3px solid var(--mustard-500);
+    overflow:hidden;
+  }
+  .marquee h1{
+    margin:14px 0 0;
+    font-size: clamp(1.4rem, 3.8vw, 2.2rem);
+    color: var(--mustard-300);
+    text-shadow: 0 0 14px rgba(232,166,61,0.35), 0 2px 0 rgba(0,0,0,0.4);
+  }
+  .marquee p{
+    margin:8px 0 0;
+    color: var(--cream-200);
+    font-size:0.92rem;
+    opacity:0.85;
+  }
+  .marquee-bulbs{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+  }
+  .marquee-bulbs span{
+    width:8px;height:8px;border-radius:50%;
+    background: var(--mustard-500);
+    box-shadow:0 0 6px 1px rgba(232,166,61,0.7);
+    animation: twinkle 1.6s infinite ease-in-out;
+  }
+  .marquee-bulbs span:nth-child(odd){ background: var(--coral-500); box-shadow:0 0 6px 1px rgba(217,87,59,0.7); animation-delay:0.3s;}
+  .marquee-bulbs span:nth-child(3n){ background: var(--teal-300); box-shadow:0 0 6px 1px rgba(93,163,157,0.6); animation-delay:0.6s;}
+  @keyframes twinkle{
+    0%,100%{ opacity:0.35; transform:scale(0.85); }
+    50%{ opacity:1; transform:scale(1.05); }
+  }
+  .marquee-logo{
+    max-width: min(90%, 320px);
+    height: auto;
+    display: inline-block;
+    filter: drop-shadow(0 0 14px rgba(232,183,61,0.35)) drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+  }
+
+  .nav-switch{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:40;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    border-radius:999px;
+    background: var(--maroon-900);
+    border:1px solid rgba(232,166,61,0.4);
+    color: var(--mustard-300);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    font-weight:600;
+    text-decoration:none;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .nav-switch:hover{ background: var(--maroon-800); transform: translateY(-1px); }
+
+  /* ---------- LAYOUT ---------- */
+  main{
+    max-width:980px;
+    margin:0 auto;
+    padding: 34px 20px 60px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin: 34px 0 16px;
+  }
+  .section-head:first-child{ margin-top:6px; }
+  .points-pill{
+    font-family:'Bungee', sans-serif;
+    font-size:0.8rem;
+    padding: 7px 16px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .points-pill.p1{
+    background: rgba(63,169,220,0.15);
+    color: var(--teal-300);
+    border: 1px solid rgba(63,169,220,0.4);
+  }
+  .points-pill.p2{
+    background: rgba(217,72,59,0.15);
+    color: var(--coral-300);
+    border: 1px solid rgba(217,72,59,0.4);
+  }
+  .section-head h2{
+    margin:0;
+    font-size:1.05rem;
+    font-weight:700;
+    color: var(--cream-100);
+  }
+  .section-head .sub{
+    margin:0;
+    font-size:0.8rem;
+    color: var(--cream-200);
+    opacity:0.7;
+  }
+
+  /* ---------- TABLE ---------- */
+  .logros-table{
+    background: var(--maroon-900);
+    border: 1px solid rgba(232,166,61,0.25);
+    border-radius: 16px;
+    overflow:hidden;
+  }
+  .logro-row{
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 4px 16px;
+    align-items:center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(247,236,217,0.08);
+    transition: background 0.15s ease, opacity 0.15s ease;
+  }
+  .logro-row:last-child{ border-bottom:none; }
+  .logro-row:hover{ background: rgba(247,236,217,0.03); }
+
+  .logro-check{
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width:26px; height:26px;
+    border-radius:8px;
+    border: 2px solid rgba(232,166,61,0.4);
+    background: var(--maroon-800);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: transparent;
+    font-size:0.9rem;
+    flex-shrink:0;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .logro-check:hover{ border-color: var(--mustard-500); }
+  .logro-row.done .logro-check{
+    background: var(--mustard-500);
+    border-color: var(--mustard-500);
+    color: #2a1c05;
+  }
+  .logro-row.pts-2 .logro-check{ border-color: rgba(217,72,59,0.5); }
+  .logro-row.pts-2.done .logro-check{ background: var(--coral-500); border-color: var(--coral-500); color: #2a0805; }
+
+  .logro-row.done{ opacity: 0.5; }
+  .logro-row.done .logro-name{ text-decoration: line-through; text-decoration-color: rgba(243,210,122,0.6); }
+
+  .logro-name{
+    font-weight:700;
+    font-size:0.98rem;
+    color: var(--mustard-300);
+    grid-column: 2;
+  }
+  .logro-desc{
+    grid-column: 2;
+    font-size:0.85rem;
+    color: var(--cream-200);
+    opacity:0.85;
+    line-height:1.4;
+  }
+  .logro-score{
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self:center;
+    justify-self:end;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    min-width:64px;
+    padding: 8px 14px;
+    border-radius:12px;
+    text-align:center;
+  }
+  .logro-row.pts-1 .logro-score{
+    background: rgba(63,169,220,0.12);
+    border: 1px solid rgba(63,169,220,0.35);
+  }
+  .logro-row.pts-2 .logro-score{
+    background: rgba(217,72,59,0.12);
+    border: 1px solid rgba(217,72,59,0.35);
+  }
+  .logro-score .num{
+    font-family:'Bungee', sans-serif;
+    font-size:1.15rem;
+    line-height:1;
+  }
+  .logro-row.pts-1 .logro-score .num{ color: var(--teal-300); }
+  .logro-row.pts-2 .logro-score .num{ color: var(--coral-300); }
+  .logro-score .lbl{
+    font-size:0.6rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color: var(--cream-200);
+    opacity:0.6;
+  }
+  .team-tag{
+    display:inline-block;
+    margin-left:8px;
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding: 2px 8px;
+    border-radius:999px;
+    background: rgba(243,210,122,0.12);
+    color: var(--mustard-300);
+    border: 1px solid rgba(243,210,122,0.3);
+    vertical-align:middle;
+  }
+
+  @media (max-width: 560px){
+    .logro-row{ grid-template-columns: auto 1fr; }
+    .logro-check{ width:22px; height:22px; }
+    .logro-score{
+      grid-column: 1 / span 2;
+      grid-row: 3;
+      justify-self:start;
+      flex-direction:row;
+      gap:6px;
+      margin-top:8px;
+      padding:6px 12px;
+    }
+  }
+
+  footer{
+    text-align:center;
+    padding: 10px 16px 30px;
+    font-size:0.75rem;
+    color: var(--cream-200);
+    opacity:0.6;
+  }
+</style>
+</head>
+<body>
+<a class="nav-switch" href="index.html">🎡 Ir a la Ruleta</a>
+
+<div class="marquee">
+  <div class="marquee-bulbs">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <img class="marquee-logo" src="Img/ELBORDE2_LOGO.png" alt="El Borde 2 - Minecraft Server">
+  <h1 class="display">Logros del Servidor</h1>
+  <p>Completá los desafíos y sumá puntos para tu equipo</p>
+</div>
+
+<main>
+
+  <div class="section-head">
+    <span class="points-pill p1">1 PUNTO</span>
+    <div>
+      <h2>Logros básicos</h2>
+      <p class="sub" id="progreso1">Retos accesibles para cualquier jugador</p>
+    </div>
+  </div>
+  <div class="logros-table" id="tabla1"></div>
+
+  <div class="section-head">
+    <span class="points-pill p2">2 PUNTOS</span>
+    <div>
+      <h2>Logros difíciles</h2>
+      <p class="sub" id="progreso2">Requieren más esfuerzo o suerte</p>
+    </div>
+  </div>
+  <div class="logros-table" id="tabla2"></div>
+
+</main>
+
+<footer>Marcá los logros como hechos tocando el casillero. El progreso se guarda en este navegador.</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  const logros1 = [
+    { id:"ligero-cual-conejo", nombre:"Ligero cual Conejo", desc:"Caminar sobre nieve en polvo usando botas de cuero", equipo:true },
+    { id:"sicario", nombre:"Sicario", desc:"Invocar un golem de hierro" },
+    { id:"diamantes", nombre:"¡Diamantes!", desc:"Conseguir un diamante (+1 extra para el primero del server en lograrlo)" },
+    { id:"aprendiz-de-mago", nombre:"Aprendiz de Mago", desc:"Encantar un objeto en la mesa de encantamientos" },
+    { id:"es-un-globo", nombre:"¿Es un globo?", desc:"Mirar un ghast con un catalejo" },
+    { id:"terrible-fortaleza", nombre:"Una Terrible Fortaleza", desc:"Entrar a una fortaleza del Nether" },
+    { id:"esta-que-arde", nombre:"Está que Arde", desc:"Conseguir una vara de blaze" },
+    { id:"mejores-amigos", nombre:"Mejores Amigos para Siempre", desc:"Domesticar un animal" },
+    { id:"pesca-tactica", nombre:"Pesca Táctica", desc:"Atrapar un pez con un balde de agua, sin caña", equipo:true },
+    { id:"dulce-cantar", nombre:"El Dulce Cantar", desc:"Poner un disco en un tocadiscos dentro de una pradera", equipo:true },
+    { id:"bukkit-bukkit", nombre:"Bukkit Bukkit", desc:"Atrapar un renacuajo con un balde" },
+    { id:"encerando-ando", nombre:"Encerando Ando", desc:"Encerar un bloque de cobre con un panal" },
+    { id:"que-tiempos-aquellos", nombre:"Qué Tiempos Aquellos", desc:"Entrar a un bastión (Bastion Remnant)" },
+    { id:"no-hoy-gracias", nombre:"No Hoy, Gracias", desc:"Bloquear un proyectil con un escudo" },
+    { id:"casa-lodestone", nombre:"A Casa con la Lodestone", desc:"Usar una brújula sobre una lodestone" },
+    { id:"es-un-pajaro", nombre:"¿Es un pájaro?", desc:"Mirar un loro con un catalejo" },
+    { id:"buen-trato", nombre:"¡Buen Trato!", desc:"Comerciar exitosamente con un aldeano" },
+    { id:"situacion-pegajosa", nombre:"Situación Pegajosa", desc:"Caer sobre un bloque de miel para amortiguar la caída" },
+    { id:"vieja-confiable", nombre:"Vieja Confiable", desc:"Disparar una ballesta" },
+    { id:"dulces-suenos", nombre:"Dulces Sueños", desc:"Dormir en una cama" },
+    { id:"apuntando", nombre:"Apuntando", desc:"Dispararle a algo con arco y flecha" },
+    { id:"corta-cebollas", nombre:"¿Quién Corta Cebollas?", desc:"Conseguir un bloque de obsidiana llorosa" },
+    { id:"barca-con-patas", nombre:"Esta Barca tiene Patas", desc:"Montar un strider usando un hongo deformado en un palo" },
+    { id:"cerveceria-local", nombre:"Cervecería Local", desc:"Preparar cualquier poción en un soporte de pociones" }
+  ];
+
+  const logros2 = [
+    { id:"por-una-cabeza", nombre:"Por una Cabeza", desc:"Conseguir una calavera de esqueleto wither" },
+    { id:"destinos-turisticos", nombre:"Cálidos Destinos Turísticos", desc:"Visitar los 5 biomas del Nether" },
+    { id:"oculto-profundidades", nombre:"Oculto en las Profundidades", desc:"Conseguir escombros ancestrales" },
+    { id:"muy-aterrador", nombre:"Muy Muy Aterrador", desc:"Golpear a un aldeano con un rayo" },
+    { id:"poder-curativo-amistad", nombre:"El Poder Curativo de la Amistad", desc:"Formar equipo con un ajolote y ganar una pelea" }
+  ];
+
+  const STORAGE_KEY = "elborde2-logros-hechos";
+
+  function cargarHechos(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+
+  function guardarHechos(hechos){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(hechos)); }catch(e){}
+  }
+
+  let hechos = cargarHechos();
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function renderTabla(el, lista, puntos){
+    el.innerHTML = lista.map(l => {
+      const done = !!hechos[l.id];
+      return `
+      <div class="logro-row pts-${puntos}${done ? ' done' : ''}" data-id="${l.id}">
+        <button class="logro-check" data-id="${l.id}" aria-label="Marcar como hecho" aria-pressed="${done}">${done ? '✓' : ''}</button>
+        <div class="logro-name">${escapeHtml(l.nombre)}${l.equipo ? '<span class="team-tag">Equipo</span>' : ''}</div>
+        <div class="logro-desc">${escapeHtml(l.desc)}</div>
+        <div class="logro-score">
+          <span class="num">+${puntos}</span>
+          <span class="lbl">${puntos === 1 ? 'punto' : 'puntos'}</span>
+        </div>
+      </div>
+    `;
+    }).join('');
+    actualizarProgreso();
+  }
+
+  function actualizarProgreso(){
+    const total1 = logros1.length;
+    const done1 = logros1.filter(l => hechos[l.id]).length;
+    const total2 = logros2.length;
+    const done2 = logros2.filter(l => hechos[l.id]).length;
+    document.getElementById('progreso1').textContent = `${done1} / ${total1} completados`;
+    document.getElementById('progreso2').textContent = `${done2} / ${total2} completados`;
+  }
+
+  function toggleLogro(id){
+    hechos[id] = !hechos[id];
+    guardarHechos(hechos);
+    renderTabla(document.getElementById('tabla1'), logros1, 1);
+    renderTabla(document.getElementById('tabla2'), logros2, 2);
+  }
+
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.logro-check');
+    if(!btn) return;
+    toggleLogro(btn.dataset.id);
+  });
+
+  renderTabla(document.getElementById('tabla1'), logros1, 1);
+  renderTabla(document.getElementById('tabla2'), logros2, 2);
+
+})();
+</script>
+</body>
+</html>
